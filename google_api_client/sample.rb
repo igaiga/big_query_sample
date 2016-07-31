@@ -45,7 +45,5 @@ class BigQueryConnection
 end
 
 bqc = BigQueryConnection.new
-require 'pry'; binding.pry
-
 p bqc.table("tests")
 #bqc.create_table
