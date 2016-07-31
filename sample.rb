@@ -20,15 +20,29 @@ class BigQueryConnection
         BigQuery::AUTH_BIGQUERY_INSERTDATA
       ]
     )
-
-    @bigquery
   end
 
   # テーブル情報取得
   def table(table_name)
     @bigquery.get_table(PROJECT_ID, DATASET_ID, table_name)
   end
+
+  def create_table
+    table_name = "test2"
+    schema = [
+        { name: "id", type: "INTEGER", mode: 'required', description: "id"},
+        { name: "name", type: "STRING", description: "name"},
+        { name: "count", type: "INTEGER", description: "count"}
+      ]
+
+    table = BigQuery::Table.new(
+      table_reference: { project_id: PROJECT_ID, dataset_id: DATASET_ID, table_id: "test2" },
+      schema: { fields: schema }
+      )
+    @bigquery.insert_table(PROJECT_ID, DATASET_ID, table)
+  end
 end
 
 bqc = BigQueryConnection.new
-p bqc.table("tests")
+#p bqc.table("tests")
+#bqc.create_table
