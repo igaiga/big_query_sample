@@ -42,8 +42,28 @@ class BigQueryConnection
       )
     @bigquery.insert_table(PROJECT_ID, DATASET_ID, table)
   end
+
+  def insert_all
+    rows = [
+        {
+          :insertId => "foo1",
+          :json => { name: "foo1", data: "bar" }
+        },
+        {
+          :insertId => "foo2",
+          :json => { name: "foo2", data: "baz" }
+        },
+      ]
+    insert_all_table_data_request = Google::Apis::BigqueryV2::InsertAllTableDataRequest.new({
+        :rows => rows
+                                                                                              })
+
+    p @bigquery.insert_all_table_data(PROJECT_ID, DATASET_ID, "tests", insert_all_table_data_request)
+  end
 end
 
 bqc = BigQueryConnection.new
-p bqc.table("tests")
+#p bqc.table("tests")
 #bqc.create_table
+bqc.insert_all
+
